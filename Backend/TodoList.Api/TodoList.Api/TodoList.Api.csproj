@@ -9,6 +9,8 @@
     <Content Remove="Services\**" />
     <EmbeddedResource Remove="Services\**" />
     <None Remove="Services\**" />
+    <None Remove="Models\" />
+    <None Remove="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,4 +24,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup> 
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\ToDoService.cs" />
+  </ItemGroup>
 </Project>
