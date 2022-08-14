@@ -1,16 +1,34 @@
+import { CircularProgress } from '@material-ui/core';
+import { useEffect, useState } from 'react'
 import { Button, Table } from 'react-bootstrap'
 
-const ToDoItemsList = (props) => {
+const ToDoItemsList = () => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [items, setItems] = useState([]);
 
-    async function getItems() {
+    useEffect(() => {
+        getItems();
+    }, [])
+
+    const getItems = async () => {
         try {
-            alert('todo')
+            setError(null);
+            setLoading(true);
+            const response = await fetch('https://localhost:5001/api/todoitems/');
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            else {
+                response.json().then(i => setItems(i));
+            }
         } catch (error) {
-            console.error(error)
+            setError(error.message);
         }
+        setLoading(false);
     }
 
-    async function handleMarkAsComplete(item) {
+    const handleMarkAsComplete = (item) => {
         try {
             alert('todo')
         } catch (error) {
@@ -20,7 +38,8 @@ const ToDoItemsList = (props) => {
     return (
         <>
             <h1>
-                Showing {props.items.length} Item(s){' '}
+                {loading && <CircularProgress size={20} />}
+                Showing {items.length} Item(s){' '}
                 <Button variant="primary" className="pull-right" onClick={() => getItems()}>
                     Refresh
                 </Button>
@@ -35,7 +54,7 @@ const ToDoItemsList = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.items.map((item) => (
+                    {items.map((item) => (
                         <tr key={item.id}>
                             <td>{item.id}</td>
                             <td>{item.description}</td>

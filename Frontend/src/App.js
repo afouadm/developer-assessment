@@ -9,10 +9,6 @@ const axios = require('axios')
 const App = () => {
     const [items, setItems] = useState([])
 
-    useEffect(() => {
-        // todo
-    }, [])
-
     return (
         <div className="App">
             <Container>
