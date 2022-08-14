@@ -53,6 +53,7 @@ const AddToDoItem = (props) => {
                         type="text"
                         placeholder="Enter description..."
                         value={description}
+                        data-testid="description-text-input"
                         onChange={handleDescriptionChange}
                     />
                 </Col>
@@ -60,7 +61,7 @@ const AddToDoItem = (props) => {
             </Form.Group>
             <Form.Group as={Row} className="mb-3 offset-md-2" controlId="formAddTodoItem">
                 <Stack direction="horizontal" gap={2}>
-                    <Button variant="primary" disabled={!description || !description.trim()} onClick={() => handleAdd()}>
+                    <Button variant="primary" data-testid="add-button" disabled={!description || !description.trim()} onClick={() => handleAdd()}>
                         Add Item
                     </Button>
                     <Button variant="secondary" onClick={() => handleClear()}>
