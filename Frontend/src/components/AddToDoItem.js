@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { Button, Container, Row, Col, Form, Stack } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-const AddToDoItem = () => {
+const AddToDoItem = (props) => {
     const [description, setDescription] = useState('');
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState(null);
@@ -30,6 +30,7 @@ const AddToDoItem = () => {
             }
             else {
                 handleClear();
+                props.onItemAdded();
             }
         } catch (error) {
             setError(error.message);

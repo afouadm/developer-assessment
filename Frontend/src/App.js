@@ -3,12 +3,35 @@ import { Image, Alert, Container, Row, Col } from 'react-bootstrap'
 import React, { useState, useEffect } from 'react'
 import AddToDoItem from './components/AddToDoItem';
 import ToDoItemsList from './components/ToDoItemsList';
+import { CircularProgress } from '@material-ui/core';
 
 const axios = require('axios')
 
 const App = () => {
     const [items, setItems] = useState([])
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
+    useEffect(() => {
+        getItems();
+    }, [])
+
+    const getItems = async () => {
+        try {
+            setError(null);
+            setLoading(true);
+            const response = await fetch('https://localhost:5001/api/todoitems/');
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            else {
+                response.json().then(i => setItems(i));
+            }
+        } catch (error) {
+            setError(error.message);
+        }
+        setLoading(false);
+    }
     return (
         <div className="App">
             <Container>
@@ -41,11 +64,19 @@ const App = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col><AddToDoItem/></Col>
+                    <Col><AddToDoItem onItemAdded={() => getItems()} /></Col>
                 </Row>
                 <br />
                 <Row>
-                    <Col><ToDoItemsList items={items}/></Col>
+                    {loading && <CircularProgress size={20} />}
+                </Row>
+                <Row>
+                    {error && <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                        {error}
+                    </div>}
+                </Row>
+                <Row>
+                    <Col><ToDoItemsList items={items} handleRefresh={() => getItems()} /></Col>
                 </Row>
             </Container>
             <footer className="page-footer font-small teal pt-4">
